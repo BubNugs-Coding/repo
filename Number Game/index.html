@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Number Game</h1>
+        <div class="game-info">
+            <p>Current Number: <span id="currentNumber">0</span></p>
+            <p>Player's Turn: <span id="playerTurn">You</span></p>
+        </div>
+        <div class="difficulty-select">
+            <label for="difficulty">Difficulty: </label>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium" selected>Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+        <div class="controls">
+            <button id="remove1">Remove 1</button>
+            <button id="remove2">Remove 2</button>
+            <button id="remove3">Remove 3</button>
+            <button id="hint" class="hint-button">Hint</button>
+        </div>
+        <div id="message" class="message"></div>
+        <button id="newGame" class="new-game">New Game</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

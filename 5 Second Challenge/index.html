@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic HTML setup and meta information -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5 Second Challenge</title>
+    <style>
+        /* Main page styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        /* Game container styling - creates a card-like appearance */
+        .game-container {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        /* Title styling */
+        h1 {
+            color: #333;
+            margin-bottom: 2rem;
+        }
+
+        /* Timer styling - hidden by default, shown only when game ends */
+        .timer {
+            font-size: 2rem;
+            margin: 1rem 0;
+            color: #666;
+            height: 2.5rem;
+            visibility: hidden;  /* Timer is hidden during gameplay */
+        }
+        .timer.show {
+            visibility: visible;  /* Timer becomes visible when showing results */
+        }
+
+        /* Button styling */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Result text styling */
+        .result {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main game container -->
+    <div class="game-container">
+        <h1>5 Second Challenge</h1>
+        <!-- Timer display - hidden during gameplay -->
+        <div class="timer" id="timer">0.00</div>
+        <!-- Start/Stop button -->
+        <button id="startButton">Start Game</button>
+        <!-- Result display area -->
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        // Game state variables
+        let startTime;      // Stores the timestamp when game starts
+        let timerInterval;  // Stores the interval ID for the timer
+        let gameStarted = false;  // Tracks whether game is in progress
+
+        // Get references to DOM elements
+        const startButton = document.getElementById('startButton');
+        const timer = document.getElementById('timer');
+        const result = document.getElementById('result');
+
+        // Function to update the timer display
+        function updateTimer() {
+            const currentTime = Date.now();
+            const elapsedTime = (currentTime - startTime) / 1000;  // Convert to seconds
+            timer.textContent = elapsedTime.toFixed(2);  // Display with 2 decimal places
+        }
+
+        // Main game logic - handles start/stop button clicks
+        startButton.addEventListener('click', () => {
+            if (!gameStarted) {
+                // Start the game
+                gameStarted = true;
+                startTime = Date.now();  // Record start time
+                startButton.textContent = 'Stop';
+                result.textContent = '';
+                timer.classList.remove('show');  // Hide timer during gameplay
+                timerInterval = setInterval(updateTimer, 10);  // Update timer every 10ms
+            } else {
+                // End the game
+                clearInterval(timerInterval);
+                const endTime = Date.now();
+                const elapsedTime = (endTime - startTime) / 1000;
+                const difference = Math.abs(5 - elapsedTime);  // Calculate how far off from 10 seconds
+                
+                // Display results with appropriate message based on accuracy
+                result.textContent = `You waited ${elapsedTime.toFixed(2)} seconds. `;
+                if (difference < 0.5) {
+                    result.textContent += "Amazing! You're right on target!";
+                } else if (difference < 1) {
+                    result.textContent += "Great job! Very close!";
+                } else {
+                    result.textContent += `You were ${difference.toFixed(2)} seconds off.`;
+                }
+                
+                // Reset game state
+                startButton.textContent = 'Start Game';
+                timer.textContent = elapsedTime.toFixed(2);
+                timer.classList.add('show');  // Show final time
+                gameStarted = false;
+            }
+        });
+    </script>
+</body>
+</html> 
